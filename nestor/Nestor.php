@@ -50,11 +50,14 @@ class Nestor
 
 
     /**
-     * init timer (called from boot)
+     * Init the timer and set the place where to store logs (should be called when the program boot ).
+     * @parameter string A writable directory where to store the logs
+     * @parameter string The public path to access the logs.
      *
      */
-    public static function start($logsStorage){
+    public static function start($logsStorage,$httpLogsStorage="/"){
         Nestor____vars::$logsStorage=$logsStorage;
+        Nestor____vars::$httpLogsStorage=$httpLogsStorage;
         Nestor____vars::$startTime=microtime(true);
     }
 
@@ -70,9 +73,11 @@ class Nestor
             $view=Nestor____vars::getViewPopIn();
             $nestorContent=$view->render();
             file_put_contents($logFile,$nestorContent);
-            header("x-nestor : http://".$_SERVER["HTTP_HOST"]."/".$logFile);
+            header("x-nestor : http://".$_SERVER["HTTP_HOST"]."/".Nestor____vars::$httpLogsStorage."".$logFile);
         }
     }
+
+
 
 
 
@@ -99,6 +104,41 @@ class Nestor
 
            $old=Nestor____vars::$breakPoints[count( Nestor____vars::$breakPoints)-1];
            $bp->difTime= $bp->time - $old->time;
+        }
+
+        $bp->file=$bt[0]["file"];
+        $bp->fileLine=$bt[0]["line"];
+
+        Nestor____vars::$breakPoints[]=$bp;
+        return $bp;
+    }
+
+    /**
+     * @param string        $title     Title of your log
+     * @param string        $details   More information for this log
+     * @param null|string   $color     An hexadecimal color (#ff00ee) to use to display the log
+     * @param null|string   $group     If set will count all logs in this group. This is useful to count number of database request, number of file included...in fact to count similar actions.
+     *
+     * @return NestorBreakPoint
+     */
+    public static function log($title,$details="",$color=null,$group=null){
+        $bp=new NestorBreakPoint();
+        if(!Nestor____vars::isActive()){
+            return $bp;
+        }
+        $bp->label=$title;
+        $bp->details=$details;
+
+        $bp->group=$group;
+        $bp->color=$color;
+        $bt=debug_backtrace();
+
+        $bp->type=$group;
+
+        $bp->time=Nestor____vars::getMicrotime();
+        if(count( Nestor____vars::$breakPoints)>0){
+            $old=Nestor____vars::$breakPoints[count( Nestor____vars::$breakPoints)-1];
+            $bp->difTime= $bp->time - $old->time;
         }
 
         $bp->file=$bt[0]["file"];

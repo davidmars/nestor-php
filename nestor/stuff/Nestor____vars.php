@@ -24,6 +24,11 @@ class Nestor____vars {
     }
 
     /**
+     * @var string The public url to access logs folder
+     */
+    public static $httpLogsStorage="/";
+
+    /**
      * @return float The current time of your script in seconds (with 6 decimals);
      */
     public static function getMicrotime(){

@@ -44,6 +44,11 @@ class NestorBreakPoint{
      * @var string
      */
     public $type="";
+
+
+    public $group;
+
+    public $color;
     /**
      * @var string Label of the break point
      */
