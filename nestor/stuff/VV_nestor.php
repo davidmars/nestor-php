@@ -30,33 +30,33 @@ class VV_nestor
     public $mainSteps = array();
 
     /**
-     * filter the Break points to fill arrays like $queries or $mainSteps
+     * filter the Break points to fill groups array
      */
     public function filterBreakPoints()
     {
         foreach (Nestor____vars::$breakPoints as $bp) {
-            if ($bp->type == Nestor::LABEL_MYSQL_QUERY) {
-                $this->queries[] = $bp;
-            }
-            if ($bp->isMainStep) {
-                $this->mainSteps[] = $bp;
+            if($bp->group){
+                if(!isset($this->groups[$bp->group])){
+                    $gr=new VV_nestor_group();
+                    $gr->name=$bp->group;
+                    $this->groups[$bp->group]=$gr;
+                }
+                $gr=$this->groups[$bp->group];
+                $gr->count++;
+                $gr->duration+=$bp->duration();
             }
         }
     }
-
 
     /**
-     * @return float The total time taken by mysql queries
+     * @var VV_nestor_group[]
      */
-    public function queriesDuration()
-    {
-        $duration = 0.0;
-        foreach ($this->queries as $q) {
-            $duration += $q->duration();
-        }
-        return number_format($duration, 5);
-        //return number_format($duration,4);
-    }
+    public $groups=array();
+
+
+
+
+
 
     /**
      * @return string Return a string label "success" or "warn" or "danger" according how many time took the page to be generated.
@@ -76,4 +76,19 @@ class VV_nestor
 
 
 
+}
+
+class VV_nestor_group{
+    /**
+     * @var int Total duration of this breakpoint groups
+     */
+    public $duration=0;
+    /**
+     * @var int Number of breakpoints of this group
+     */
+    public $count=0;
+    /**
+     * @var string
+     */
+    public $name="";
 }

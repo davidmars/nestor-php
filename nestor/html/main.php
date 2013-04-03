@@ -19,6 +19,12 @@ $vv = $_vars;
             <label>Total time</label>
             <span><?=$vv->totalTime()?> seconds</span>
         </div>
+        <?foreach($vv->groups as $gr):?>
+            <div class="label-value">
+                <label><?=$gr->name?></label>
+                <span><?=$gr->count?> that took <?=$gr->duration?> seconds</span>
+            </div>
+        <?endforeach?>
         <?/*
         <div class="label-value">
             <label>Mysql queries</label>

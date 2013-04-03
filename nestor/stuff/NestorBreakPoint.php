@@ -45,9 +45,13 @@ class NestorBreakPoint{
      */
     public $type="";
 
-
+    /**
+     * @var string What kind of action was it? A break points with the same group will be counted.
+     */
     public $group;
-
+    /**
+     * @var What color to use to display the break point
+     */
     public $color;
     /**
      * @var string Label of the break point
@@ -66,42 +70,7 @@ class NestorBreakPoint{
      */
     public $fileLine=0;
 
-    public function color(){
-        if(!Nestor____vars::isActive()){
-            return null;
-        }
-        switch($this->type){
-            case Nestor::LABEL_MYSQL_QUERY:
-                return Nestor::LABEL_MYSQL_QUERY_COLOR;
 
-            case Nestor::LABEL_BOOT_SYSTEM:
-                return Nestor::LABEL_BOOT_SYSTEM_COLOR;
-
-            case Nestor::LABEL_CONTROLLER:
-                return Nestor::LABEL_CONTROLLER_COLOR;
-
-            case Nestor::LABEL_MODEL_CONSTRUCT:
-                return Nestor::LABEL_MODEL_CONSTRUCT_COLOR;
-
-            case Nestor::LABEL_MODEL_INIT:
-                return Nestor::LABEL_MODEL_INIT_COLOR;
-
-            case Nestor::LABEL_INCLUDE_FILE:
-                return Nestor::LABEL_INCLUDE_FILE_COLOR;
-
-            case Nestor::LABEL_VV_ACTION:
-                return Nestor::LABEL_VV_ACTION_COLOR;
-
-            case Nestor::LABEL_VV_CONSTRUCT:
-                return Nestor::LABEL_VV_CONSTRUCT_COLOR;
-
-            case Nestor::LABEL_VIEW:
-                return Nestor::LABEL_VIEW_COLOR;
-
-            default:
-                return Nestor::LABEL_MYSQL_DEFAULT_COLOR;
-        }
-    }
 
     /**
      * @return Float Percentage for $time in the total time.

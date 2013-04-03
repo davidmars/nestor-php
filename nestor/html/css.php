@@ -129,12 +129,21 @@ float: left;
 /*width: 200px;*/
 float: left;
 }
-#logs .timeline{
-width: 100%;
-background-color: #111111;
-padding:10px;
-position: relative;
+#logs .dark{
+    background-color: #111111;
+    padding:20px;
+}
+#logs .timeline-container{
+    /*width: 100%;
 overflow: hidden;
+    margin:10px;*/
+    position: relative;
+
+    padding-bottom: 400px;
+}
+#logs .timeline{
+    /*width: 100%;*/
+    position: relative;
 }
 
 /*----main steps----------*/
