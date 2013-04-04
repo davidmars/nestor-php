@@ -1,10 +1,11 @@
 <?php
-/* @var $this View */
+/* @var $this NestorView */
 /* @var $vv VV_nestor */
 /** @noinspection PhpUndefinedVariableInspection */
 $vv = $_vars;
 ?>
-<div class="title" xmlns="http://www.w3.org/1999/html">Break points</div>
+<div class="title">Break points</div>
+
 <div class="dark">
 <div class="timeline-container">
     <div class="timeline">
@@ -12,9 +13,13 @@ $vv = $_vars;
         <?//--------the main steps first--------------?>
 
         <?foreach($vv->mainSteps as $bp):?>
-            <div class="main-step">
-                <div class="line" style="left:<?=$bp->timePercent()?>%;">
-                    <div class="text"><?=$bp->label?> (<?=$bp->duration()?> sec )</div>
+            <?php
+            $mt+=20;
+            ?>
+
+            <div class="main-step" style="margin-left:<?=$bp->timePercent()?>%;">
+                <div class="line"> <?=$bp->time?> sec
+                    <div class="text" style="padding-top:<?=$mt?>px;"><a href="#<?=$bp->uid?>"><?=$bp->label?></a></div>
                 </div>
             </div>
         <?endforeach?>
@@ -23,7 +28,10 @@ $vv = $_vars;
 
         <?foreach($vv->breakPoints() as $bp):?>
 
-        <div class="bp <?=$bp->cssDisplayLeftOrRight()?> <?if($bp->isMainStep):?> is-main-step <?endif?>"  style="">
+        <div class="bp <?=$bp->cssDisplayLeftOrRight()?> <?if($bp->isMainStep):?> is-main-step <?endif?>" >
+            <?if($bp->isMainStep):?>
+            <a name="<?=$bp->uid?>"></a>
+            <?endif?>
             <div class="in"
                     style="background-color:<?=$bp->color;?>;
                     width:<?=$bp->durationPercent()?>%;

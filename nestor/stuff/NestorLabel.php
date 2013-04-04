@@ -13,6 +13,9 @@ class NestorLabel {
         $this->color=$color;
     }
 
+
+
+
     /**
      * @var string The title of the label
      */
@@ -23,16 +26,5 @@ class NestorLabel {
     public $color;
 
 
-    public static function dataBaseQuery(){
-        return new NestorLabel("Database query","#00ff00");
-    }
-    public static function includeFile(){
-        return new NestorLabel("Include file","#ff0000");
-    }
-    public static function view(){
-        return new NestorLabel("View","#ffff00");
-    }
-    public static function model(){
-        return new NestorLabel("Model","#ffff00");
-    }
+
 }

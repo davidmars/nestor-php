@@ -3,7 +3,7 @@
  * Class Nestor____vars
  * Because I don't want to get all this stuff in nestor directly for a minimal code autosuggestion.
  */
-class Nestor____vars {
+abstract class Nestor____vars {
     /**
      * @return int Return the diff between startTime and endTime...so in theory the total time you program took to be executed.
      */

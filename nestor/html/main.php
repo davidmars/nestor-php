@@ -10,8 +10,20 @@ $vv = $_vars;
 <div id="logs">
 
     <div class="title-bar"><?=$_SERVER["HTTP_HOST"]?><?=$_SERVER["REQUEST_URI"]?> ( server time : <?=date("Y/m/d h:i:s",time())?> )
-
         <div class="toggler <?=$vv->globalStatus()?>"></div>
+        <div class="time">
+        <?foreach($vv->mainSteps as $bp):?>
+            <?php
+            $mt+=20;
+            ?>
+
+                <div class="time-point" style="left:<?=$bp->timePercent()?>%;">
+                    <div class=""> <?=$bp->time?> sec</div>
+                </div>
+
+        <?endforeach?>
+        </div>
+
     </div>
 
     <div class="content">

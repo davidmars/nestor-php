@@ -8,77 +8,46 @@ padding-bottom: 400px;;
 }
 #logs{
 font-family: Arial, sans-serif;
-font-size: 12px;
-/*z-index: 50000;
-position: fixed;
-top:0px;
-left: 0px;
-width: 16px;
-height: 16px;
-margin: 10px;
-overflow: hidden;*/
-
-color: #111;
-
-
-
+font-size: 10px;
+color: #808080;
 }
 #logs a{
-color: #111;
+color: #5c5454;
 }
 #logs a:hover{
 color: #666;
 }
 
-#logs.open{
-width: 95%;
-height: 95%;
--webkit-border-radius: 6px;
-border-radius: 6px;
-}
+
 
 
 #logs .title-bar{
 position: relative;
 font-weight: bold;
-
 }
-#logs.open .title-bar{
-
-color: #fff;
-background-color: #000;
-padding-left: 10px;
-height: 26px;
-padding-top: 4px;
-
--webkit-border-top-left-radius: 6px;
--webkit-border-top-right-radius: 6px;
--moz-border-radius-topleft: 6px;
--moz-border-radius-topright: 6px;
-border-top-left-radius: 6px;
-border-top-right-radius: 6px;
+#logs .title-bar .time{
+    position: relative;
+    margin: 30px;
+    margin-top:10px;
 }
+#logs .title-bar .time-point{
+    position: absolute;
+}
+
 #logs .toggler{
+    cursor: pointer;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
 
-cursor: pointer;
--webkit-border-radius: 8px;
-border-radius: 8px;
+    position: absolute;
+    top: 0px;
+    right:0px;
 
-position: absolute;
-top: 0px;
-right:0px;
-
-background-color: #0f0;
-width: 16px;
-height: 16px;
+    background-color: #0f0;
+    width: 16px;
+    height: 16px;
 }
-#logs.open .title-bar .toggler{
 
-right: 4px;
-left:auto;
-top:4px;
-
-}
 
 #logs .toggler.warn{
 background-color: orange;
@@ -96,7 +65,7 @@ padding: 10px;
 position: absolute;
 left:0px;
 right: 0px;
-top:30px;
+top:60px;
 bottom: 0px;
 overflow-y: scroll;
 overflow-x: hidden;
@@ -126,7 +95,7 @@ color:#666;
 float: left;
 }
 #logs .label-value .right{
-/*width: 200px;*/
+
 float: left;
 }
 #logs .dark{
@@ -134,11 +103,7 @@ float: left;
     padding:20px;
 }
 #logs .timeline-container{
-    /*width: 100%;
-overflow: hidden;
-    margin:10px;*/
     position: relative;
-
     padding-bottom: 400px;
 }
 #logs .timeline{
@@ -149,21 +114,19 @@ overflow: hidden;
 /*----main steps----------*/
 
 #logs .main-step{
-height: 20px;
-position: relative;
+    height: 22px;
 }
 
 #logs .line{
-position: absolute;
-border-left: 1px dashed #333;
-height: 100000px;
-margin-top: -500px;
+    position: absolute;
+    border-left: 1px dashed #333;
+    top:0px;
+    bottom:0px;
+    padding-left: 5px;
 }
-#logs .main-step .line .text{
+#logs .main-step .text{
 color: #666;
-padding-left: 4px;
 font-size: 10px;
-margin-top: 500px;
 }
 
 #logs .timeline .bp{
@@ -185,8 +148,6 @@ min-width: 10px;
 height:10px;
 border-radius: 10px;
 background-color: #888;
-
-
 height: 100%;
 cursor: pointer;
 }
@@ -194,24 +155,21 @@ cursor: pointer;
 #logs .timeline .bp .text-content{
 position: absolute;
 z-index: 50020;
-display:none;
 margin-left: 20px;
-background-color: #eeeeee;
-color: #222;
 padding: 4px;
 border-radius: 4px;
 width: 500px;
 border: 1px solid #888;
-
+background-color: #eeeeee;
+color: #222;
+display:none;
 }
-
 #logs .timeline .bp.left .text-content{
 left: 10px;
 }
 #logs .timeline .bp.right .text-content{
 right: 30px;
 }
-
 #logs .timeline .bp:hover .in{
 border: 1px solid #fff;
 }

@@ -16,9 +16,13 @@ class NestorBreakPoint{
      */
     public $isMainStep=false;
     /**
+     * @var string An unique id
+     */
+    public $uid;
+    /**
      * Use this function to define the endpoint.
      */
-    public function setTimeEnd(){
+    public function stop(){
         if(Nestor____vars::isActive()){
             $this->timeEnd=Nestor____vars::getMicrotime();
             $this->_duration=$this->timeEnd-$this->time;
@@ -50,7 +54,7 @@ class NestorBreakPoint{
      */
     public $group;
     /**
-     * @var What color to use to display the break point
+     * @var string What color to use to display the break point
      */
     public $color;
     /**
@@ -104,5 +108,9 @@ class NestorBreakPoint{
         }else{
             return "left";
         }
+    }
+
+    public function __construct(){
+        $this->uid=uniqid("bp");
     }
 }

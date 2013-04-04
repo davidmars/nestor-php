@@ -10,22 +10,30 @@ Nestor::start("a-directory/where-to-store-logs","tests/nestor-php/");
 //----------------logs-------------------
 
 //Just perform a simple log
-Nestor::addBreakPoint("Hello world");
-
-
+Nestor::log("Hello world");
 
 //a looooooong log
-$myCountLog=Nestor::log("Count to 5000","This will be long...","#00ff00","Stupid loops");
-for($i=0;$i<5000;$i++){
-    $aLog=Nestor::log("Add one = $i","I am the number $i","#99ff22","Stupid iterations");
-    $aLog->setTimeEnd();
+$myLongLog=Nestor::log("The lonnnng log","This one starts just after the hello world","#B66B00");
+for ($i=0;$i<10;$i++){
+    $myCountLog=Nestor::log("Loop n.$i","I am the number $i loop","#7BB130","Stupid loops");
+    $myCountLog->isMainStep=true;
+    for($j=0;$j<50;$j++){
+        $aLog=Nestor::log("Add one = $j","I am the number $j","#D9CB55","Stupid iterations");
+        $aLog->stop();
+    }
+    //tell to nestor that the "Count to 500" operation is now finished
+    $myCountLog->stop();
 }
-//tell to nestor that the "Count to 5000" opération is now finished
-$myCountLog->setTimeEnd();
+$myLongLog->stop();
+
+
+
 
 
 //-------------end of your program--------------------
 
 //stop nestor timer and return a header.
-Nestor::end();
+echo Nestor::end();
+
+
 

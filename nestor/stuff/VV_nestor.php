@@ -30,7 +30,7 @@ class VV_nestor
     public $mainSteps = array();
 
     /**
-     * filter the Break points to fill groups array
+     * filter the Break points to fill groups and main steps arrays
      */
     public function filterBreakPoints()
     {
@@ -44,6 +44,9 @@ class VV_nestor
                 $gr=$this->groups[$bp->group];
                 $gr->count++;
                 $gr->duration+=$bp->duration();
+            }
+            if($bp->isMainStep){
+                $this->mainSteps[]=$bp;
             }
         }
     }
@@ -78,6 +81,9 @@ class VV_nestor
 
 }
 
+/**
+ * Class VV_nestor_group Define a group of break points. The goal here is just to display name, number of logs and total time of this logs.
+ */
 class VV_nestor_group{
     /**
      * @var int Total duration of this breakpoint groups

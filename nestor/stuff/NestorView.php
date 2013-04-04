@@ -94,9 +94,9 @@ class NestorView
 //Human::log("Can't find the view :".$this->path, "VIEW ERROR", Human::TYPE_ERROR);
             return ("<div style='font-size:12px;color:#f00;'>Can't find the template :" . $this->path . " ( called in " . $this->caller->path . " )</div>");
         }
-        $bp = Nestor::addBreakPoint("run template " . $this->path, "", Nestor::LABEL_VIEW);
+
 //declare the variables in the template
-        /* @var $_vars ViewVariables */
+        /* @var $_vars VV_nestor */
         /** @noinspection PhpUnusedLocalVariableInspection */
         $_vars = $this->viewVariables;
         /** @noinspection PhpUnusedLocalVariableInspection */
@@ -112,7 +112,6 @@ class NestorView
         include $scriptPath;
         $content = ob_get_contents();
         ob_end_clean();
-        $bp->setTimeEnd();
         if ($this->outerView) {
             $this->outerView->insideContent = $content;
             return $this->outerView->run();
@@ -151,7 +150,7 @@ class NestorView
      * In the layout template use the variable $_content to display the current template.
      *
      * @param String        $path          path to the template file
-     * @param ViewVariables $viewVariables the data object given to the outer view, if not given, the object will be the current strictParams
+     * @param VV_nestor $viewVariables the data object given to the outer view, if not given, the object will be the current strictParams
      */
     function inside($path, $viewVariables = null)
     {
