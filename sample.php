@@ -1,39 +1,87 @@
 <?php
+error_reporting(1);
+error_reporting(E_ALL);
 
-//-------------beginning of your program--------------------
+
 
 //import Nestor Class...
 require_once "nestor/Nestor.php";
-//start nestor and give him a public and writable directory to store logs and the http path to access it.
-Nestor::start("a-directory/where-to-store-logs","tests/nestor-php/");
 
-//----------------logs-------------------
+//start Nestor and give him a public and writable directory to store logs and the related http path to access it.
+Nestor::start("a-directory/where-to-store-logs","http://nestor.oneminuteonearth.com/a-directory/where-to-store-logs");
+//test if Nestor Chrome extension is active...
+if(!Nestor::isInspecting()){
+    die("Nestor the inspector is not here. Enable the Nestor extension or <a href='https://chrome.google.com/webstore/detail/nestor-the-inspector/mojocpapgcgodcknmicecdoofceldcab'>install it </a>");
+}
 
 //Just perform a simple log
-Nestor::log("Hello world");
+Nestor::log("Hello");
 
-//a looooooong log
-$myLongLog=Nestor::log("The lonnnng log","This one starts just after the hello world","#B66B00");
-for ($i=0;$i<10;$i++){
-    $myCountLog=Nestor::log("Loop n.$i","I am the number $i loop","#7BB130","Stupid loops");
-    $myCountLog->isMainStep=true;
-    for($j=0;$j<50;$j++){
-        $aLog=Nestor::log("Add one = $j","I am the number $j","#D9CB55","Stupid iterations");
-        $aLog->stop();
-    }
-    //tell to nestor that the "Count to 500" operation is now finished
-    $myCountLog->stop();
+//A log with more details
+Nestor::log("world","This text is visible when you roll over the log line in Nestor result");
+
+//Colors !
+Nestor::log("Red","The log result will be red","#ff0000");
+Nestor::log("Green","The log result will be green","#00ff00");
+Nestor::log("Blue","The log result will be blue","#0000ff");
+
+//Groups
+Nestor::log("Mick Jagger","lead and backing vocals","#800","The rolling Stones");
+Nestor::log("Keith Richards","Elelectric, acoustic, slide and bass guitars, keyboards, backing and lead vocals","#800","The rolling Stones");
+Nestor::log("Lou Reed","Vocals, guitar","#080","The Velvet Underground");
+Nestor::log("Charlie Watts","drums, percussion","#800","The rolling Stones");
+Nestor::log("John Cale","Multiple instruments, vocals","#080","The Velvet Underground");
+Nestor::log("Sterling Morrison","Guitar","#080","The Velvet Underground");
+Nestor::log("Maureen Tucker","Percussion","#080","The Velvet Underground");
+Nestor::log("Doug Yule","Vocals, guitar","#080","The Velvet Underground");
+Nestor::log("Ronnie Wood"," electric, acoustic, lap steel, pedal steel, slide and bass guitars, saxophone, drums, backing vocals","#800","The rolling Stones");
+
+//highlight important stuff
+$myImportantLog=Nestor::log("I'm an important step in the program !","I have a dotted line","#b90");
+$myImportantLog->isMainStep=true;
+
+//How many time to perform stuff?
+$myLoopLog=Nestor::log("I'm a looong operation"); //start timer
+for($i=0;$i<5000000;$i++){
+//perform wonderful task here
 }
-$myLongLog->stop();
+$myLoopLog->stop(); //end timer
 
 
 
+/**
+ * @param string $place
+ * @param int $population
+ */
+function countPeople($place,$population){
+    $log=Nestor::log("Hello $place","They are ".number_format($population)." in $place","#095","Count of peoples");
+    for($i=0;$i<$population/1000;$i++){}
+    $log->stop();
+    $log->isMainStep=true;
+}
+
+//concurrent programs
+$myWorldLog=Nestor::log("Count people on earth planet","in million...","#059");
+
+    countPeople("Asia",4140336501);
+    countPeople("Africa",994527534);
+    countPeople("Oceania",36102071);
+
+    $america=Nestor::log("America");
+    countPeople("North America",528720588);
+    countPeople("South America",385742554);
+    $america->stop();
+
+    countPeople("Europe",738523843);
+    $myWorldLog->stop(); //end timer
 
 
 //-------------end of your program--------------------
+//stop nestor timer...
+$logUrl=Nestor::end();
+//...then you can access the log result page
+echo "<iframe src='".$logUrl."' width='90%' height='90%'>";
 
-//stop nestor timer and return a header.
-echo Nestor::end();
 
 
 

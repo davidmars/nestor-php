@@ -3,51 +3,21 @@
  * A breakpoint
  */
 class NestorBreakPoint{
-    /**
-     * @var Float Time of the break point
-     */
-    public $time=0;
-    /**
-     * @var Float Time of the end of the breakPoint
-     */
-    public $timeEnd=0;
+
     /**
      * @var bool Define if the breakpoint is a remarkable step in the page generation process.
      */
     public $isMainStep=false;
-    /**
-     * @var string An unique id
-     */
-    public $uid;
+
     /**
      * Use this function to define the endpoint.
      */
     public function stop(){
-        if(Nestor____vars::isActive()){
-            $this->timeEnd=Nestor____vars::getMicrotime();
-            $this->_duration=$this->timeEnd-$this->time;
+        if(Nestor____stuff::isActive()){
+            $this->info->timeEnd=Nestor____stuff::getMicrotime();
+            $this->info->duration=$this->info->timeEnd-$this->info->timeStart;
         }
     }
-
-    /**
-     * @var Float saved value for duration to no process the operation twice.
-     */
-    private $_duration;
-    /**
-     * @return Float return the difference between timeEnd and time
-     */
-    public function duration(){
-        return $this->_duration;
-    }
-
-    /**
-     * @var int Time difference between this breakpoint and the previous one.
-     */
-    public $difTime=0;
-    /**
-     * @var string
-     */
-    public $type="";
 
     /**
      * @var string What kind of action was it? A break points with the same group will be counted.
@@ -65,52 +35,74 @@ class NestorBreakPoint{
      * @var string Extended text details for the breakpoint
      */
     public $details="";
+
+
     /**
-     * @var string php file where the breakpoint is inserted
+     * A NestorBreakPoint represents a line in the logs result.
+     */
+    public function __construct(){
+        $this->info=new NestorBreakPointInfo();
+        $this->info->uid=uniqid("bp");
+        $this->info->timeStart=Nestor____stuff::getMicrotime();
+    }
+}
+
+/**
+ * Class NestorBreakPointInfo
+ * Here are stored details for a break point
+ */
+class NestorBreakPointInfo{
+    /**
+     * @var string The php file where the breakpoint was inserted
      */
     public $file="";
     /**
-     * @var int php line code number where the breakpoint is inserted
+     * @var int The php file line number where the breakpoint was inserted
      */
     public $fileLine=0;
-
-
+    /**
+     * @var string An unique id
+     */
+    public $uid;
 
     /**
      * @return Float Percentage for $time in the total time.
      */
     public function timePercent(){
-        $t=$this->time*(100/Nestor____vars::getTotalTime());
+        $t=$this->timeStart*(100/Nestor____stuff::getTotalTime());
         $t=min($t,100);
         $t=max($t,0);
         return $t;
     }
 
     /**
-     * @return Float Percentage for duration in the total time.
+     * @return Float Percentage for getDuration in the total time.
      */
     public function durationPercent(){
-        $d=$this->duration();
+        $d=$this->getDuration();
         if($d>0){
-            return $this->duration()*(100/Nestor____vars::getTotalTime());
+            return $this->getDuration()*(100/Nestor____stuff::getTotalTime());
         }else{
             return 0;
         }
-
     }
 
     /**
-     * @return string Will be left if the time for the break point is at the beginning of the total time elsewhere will be right
+     * @return Float return the difference between timeEnd and timeStart
      */
-    public function cssDisplayLeftOrRight(){
-        if($this->timePercent()>50){
-            return "right";
-        }else{
-            return "left";
-        }
+    public function getDuration(){
+        return $this->duration;
     }
-
-    public function __construct(){
-        $this->uid=uniqid("bp");
-    }
+    /**
+     * @var Float saved value for getDuration to no process the operation twice.
+     */
+    public $duration;
+    /**
+     * @var Float Time of the break point
+     */
+    public $timeStart=0;
+    /**
+     * @var Float Time of the end of the breakPoint
+     */
+    public $timeEnd=0;
 }

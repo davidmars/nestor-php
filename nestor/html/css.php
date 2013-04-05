@@ -27,8 +27,7 @@ font-weight: bold;
 }
 #logs .title-bar .time{
     position: relative;
-    margin: 30px;
-    margin-top:10px;
+    margin: 10px 30px 30px;
 }
 #logs .title-bar .time-point{
     position: absolute;
@@ -40,8 +39,8 @@ font-weight: bold;
     border-radius: 8px;
 
     position: absolute;
-    top: 0px;
-    right:0px;
+    top: 0;
+    right:0;
 
     background-color: #0f0;
     width: 16px;
@@ -63,10 +62,10 @@ background-color: green;
 background-color: #eee;
 padding: 10px;
 position: absolute;
-left:0px;
-right: 0px;
+left:0;
+right: 0;
 top:60px;
-bottom: 0px;
+bottom: 0;
 overflow-y: scroll;
 overflow-x: hidden;
 }
@@ -120,8 +119,8 @@ float: left;
 #logs .line{
     position: absolute;
     border-left: 1px dashed #333;
-    top:0px;
-    bottom:0px;
+    top:0;
+    bottom:0;
     padding-left: 5px;
 }
 #logs .main-step .text{
@@ -145,7 +144,6 @@ background-color: rgba(0, 0, 0, 0.2);
 position: absolute;
 margin-left: -5px;
 min-width: 10px;
-height:10px;
 border-radius: 10px;
 background-color: #888;
 height: 100%;
@@ -183,7 +181,7 @@ display:block;
 #logs .timeline .bp .text{
 position: absolute;
 color: #eee;
-width:0px;
+width:0;
 top:-4px;
 margin-left: 5px;
 }

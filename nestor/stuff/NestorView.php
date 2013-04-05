@@ -26,11 +26,6 @@ class NestorView
 
 
     /**
-     *
-     * @var bool Will be true if the view is loaded via an ajax request.
-     */
-    public $isAjax = false;
-    /**
      * @var NestorView the View object that called the current view via render or inside...so it can be null too.
      */
     public $caller;
@@ -58,7 +53,7 @@ class NestorView
             $viewVariables = array();
         }
         $this->viewVariables = $viewVariables;
-        $this->isAjax = ($_SERVER["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest");
+
     }
 
     /**

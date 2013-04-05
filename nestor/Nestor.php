@@ -1,7 +1,7 @@
 <?php
 //we need it
 require_once __DIR__."/stuff/NestorBreakPoint.php";
-require_once __DIR__."/stuff/Nestor____vars.php";
+require_once __DIR__."/stuff/Nestor____stuff.php";
 require_once __DIR__."/stuff/NestorView.php";
 require_once __DIR__."/stuff/VV_nestor.php";
 require_once __DIR__."/stuff/NestorLabel.php";
@@ -17,26 +17,25 @@ class Nestor
     /**
      * Init the timer and set the place where to store logs (should be called when the program boot ).
      * @param string $logsStorage A writable directory where to store the logs
-     * @param int $httpLogsStorage The public path to access the logs.
+     * @param string $httpLogsStorage The public path to access the logs folder...Something like http://your-domain.com/logs
      *
      */
-    public static function start($logsStorage,$httpLogsStorage="/"){
-        Nestor____vars::$logsStorage=$logsStorage;
-        Nestor____vars::$httpLogsStorage=$httpLogsStorage;
-        Nestor____vars::$startTime=microtime(true);
-        if(Nestor____vars::isActive()){
-            self::setHeader();
-        }
+    public static function start($logsStorage,$httpLogsStorage=""){
+        Nestor____stuff::$logsStorage=$logsStorage;
+        Nestor____stuff::$httpLogsStorage=$httpLogsStorage;
+        Nestor____stuff::$logFile=time()."-".uniqid().".html";
+        Nestor____stuff::$startTime=microtime(true);
+        Nestor____stuff::setHeader();
     }
 
     /**
-     * set the header that will be used by the browser extension
+     * @return bool True if Nestor is inspecting (if the pluggin is activated...you get it?)
      */
-    private static function setHeader(){
-        self::$logFile=Nestor____vars::$logsStorage."/".time()."-".uniqid().".html";
-        header("x-nestor : http://".$_SERVER["HTTP_HOST"]."/".Nestor____vars::$httpLogsStorage."".self::$logFile);
-        return "toto";
+    public static function isInspecting(){
+        return Nestor____stuff::isActive();
     }
+
+
 
     /**
      * @var string Place where we store the whole html stuff result.
@@ -45,20 +44,43 @@ class Nestor
 
     /**
      * Ends the whole Nestor inspection. Should be called at the end of the program.
-     * @return null|String If nestor is active, will return the html content recorded.
+     * @return null|String If nestor is active, will return the public url (http://something/etc...) result.
      */
     public static function end(){
-        if(Nestor____vars::isActive()){
-            Nestor____vars::$endTime=microtime(true);
-            header("x-nestor-time : ".Nestor____vars::getTotalTime());
-            $view=Nestor____vars::getViewPopIn();
-            $nestorContent=$view->render();
-            file_put_contents(self::$logFile,$nestorContent);
-            return $nestorContent;
+        if(Nestor____stuff::isActive()){
+            self::cleanDirectory();
+            Nestor____stuff::$endTime=microtime(true);
+            $json=array();
+            $json["score"]=Nestor____stuff::getTotalTime();
+
+            //just record a little file with duration
+            file_put_contents(Nestor____stuff::$logsStorage."/".Nestor____stuff::$logFile."-info.json",json_encode($json));
+            //header("x-nestor-time : ".Nestor____stuff::getTotalTime());
+            $nestorContent=Nestor____stuff::getFinalOutput();
+            file_put_contents(Nestor____stuff::$logsStorage."/".Nestor____stuff::$logFile,$nestorContent);
+            return Nestor____stuff::getPublicUrl();
         }
         return null;
-
     }
+
+    /**
+     * prevent the hard drive to explode
+     */
+    private static function cleanDirectory(){
+        $files=scandir(Nestor____stuff::$logsStorage);
+        while(count($files)>self::$configMaximumFiles){
+            $f=Nestor____stuff::$logsStorage."/".array_shift($files);
+            if(is_file($f)){
+                unlink($f);
+            }
+
+        }
+    }
+
+    /**
+     * @var int Maximum number of log files to keep. Default to 1000. Prevent your hosting hard drive to explode!
+     */
+    public static $configMaximumFiles=1000;
 
     /**
      * @param string        $title     Title of your log
@@ -70,21 +92,19 @@ class Nestor
      */
     public static function log($title,$details="",$color=null,$group=null){
         $bp=new NestorBreakPoint();
-        if(!Nestor____vars::isActive()){
+        if(!Nestor____stuff::isActive()){
             return $bp;
         }
         $bp->label=$title;
         $bp->details=$details;
         $bp->group=$group;
         $bp->color=$color;
-        $bp->type=$group;
-        $bp->time=Nestor____vars::getMicrotime();
 
         //backtrace
         $bt=debug_backtrace();
-        $bp->file=$bt[0]["file"];
-        $bp->fileLine=$bt[0]["line"];
-        Nestor____vars::$breakPoints[]=$bp;
+        $bp->info->file=$bt[0]["file"];
+        $bp->info->fileLine=$bt[0]["line"];
+        Nestor____stuff::$breakPoints[]=$bp;
         return $bp;
     }
 

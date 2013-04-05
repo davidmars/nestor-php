@@ -9,7 +9,7 @@ class VV_nestor
      */
     public function totalTime()
     {
-        return Nestor____vars::getTotalTime();
+        return Nestor____stuff::getTotalTime();
     }
 
     /**
@@ -17,7 +17,7 @@ class VV_nestor
      */
     public function breakPoints()
     {
-        return Nestor____vars::$breakPoints;
+        return Nestor____stuff::$breakPoints;
     }
 
     /**
@@ -34,7 +34,7 @@ class VV_nestor
      */
     public function filterBreakPoints()
     {
-        foreach (Nestor____vars::$breakPoints as $bp) {
+        foreach (Nestor____stuff::$breakPoints as $bp) {
             if($bp->group){
                 if(!isset($this->groups[$bp->group])){
                     $gr=new VV_nestor_group();
@@ -43,7 +43,7 @@ class VV_nestor
                 }
                 $gr=$this->groups[$bp->group];
                 $gr->count++;
-                $gr->duration+=$bp->duration();
+                $gr->duration+=$bp->info->getDuration();
             }
             if($bp->isMainStep){
                 $this->mainSteps[]=$bp;
@@ -86,7 +86,7 @@ class VV_nestor
  */
 class VV_nestor_group{
     /**
-     * @var int Total duration of this breakpoint groups
+     * @var int Total getDuration of this breakpoint groups
      */
     public $duration=0;
     /**

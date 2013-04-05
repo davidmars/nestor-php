@@ -12,13 +12,14 @@ $vv = $_vars;
     <div class="title-bar"><?=$_SERVER["HTTP_HOST"]?><?=$_SERVER["REQUEST_URI"]?> ( server time : <?=date("Y/m/d h:i:s",time())?> )
         <div class="toggler <?=$vv->globalStatus()?>"></div>
         <div class="time">
+        <?php $mt=0;?>
         <?foreach($vv->mainSteps as $bp):?>
             <?php
             $mt+=20;
             ?>
 
-                <div class="time-point" style="left:<?=$bp->timePercent()?>%;">
-                    <div class=""> <?=$bp->time?> sec</div>
+                <div class="time-point" style="left:<?=$bp->info->timePercent()?>%;">
+                    <div class=""> <?=$bp->info->timeStart?> sec</div>
                 </div>
 
         <?endforeach?>

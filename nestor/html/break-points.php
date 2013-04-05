@@ -11,43 +11,42 @@ $vv = $_vars;
     <div class="timeline">
 
         <?//--------the main steps first--------------?>
-
+        <?php $mt=0;?>
         <?foreach($vv->mainSteps as $bp):?>
-            <?php
-            $mt+=20;
-            ?>
 
-            <div class="main-step" style="margin-left:<?=$bp->timePercent()?>%;">
-                <div class="line"> <?=$bp->time?> sec
-                    <div class="text" style="padding-top:<?=$mt?>px;"><a href="#<?=$bp->uid?>"><?=$bp->label?></a></div>
+
+            <div class="main-step" style="margin-left:<?=$bp->info->timePercent()?>%;">
+                <div class="line">
+                    <div class="text" style="padding-top:<?=$mt?>px;"><a href="#<?=$bp->info->uid?>"><?=$bp->label?></a></div>
                 </div>
             </div>
+            <?php $mt+=20;?>
         <?endforeach?>
 
         <?//--------all break points-------------?>
 
         <?foreach($vv->breakPoints() as $bp):?>
 
-        <div class="bp <?=$bp->cssDisplayLeftOrRight()?> <?if($bp->isMainStep):?> is-main-step <?endif?>" >
+        <div class="bp <?=Nestor____stuff::cssDisplayLeftOrRight($bp)?> <?if($bp->isMainStep):?> is-main-step <?endif?>" >
             <?if($bp->isMainStep):?>
-            <a name="<?=$bp->uid?>"></a>
+                <a name="<?=$bp->info->uid?>"></a>
             <?endif?>
             <div class="in"
                     style="background-color:<?=$bp->color;?>;
-                    width:<?=$bp->durationPercent()?>%;
-                    left:<?=$bp->timePercent()?>%;">
+                    width:<?=$bp->info->durationPercent()?>%;
+                    left:<?=$bp->info->timePercent()?>%;">
 
                         <div class="text-content">
                             <?=$bp->group?> <b><?=$bp->label?></b><br/>
                             <?=$bp->details?><br/>
-                            At <?=$bp->time?> seconds (<?=round($bp->timePercent())?>%)<br/>
-                            Duration <?=number_format($bp->duration(),6)?> seconds (<?=round($bp->durationPercent())?>%)<br/>
-                            <?=$bp->file?> @line: <?=$bp->fileLine?><br/>
+                            At <?=$bp->info->timeStart?> seconds (<?=round($bp->info->timePercent())?>%)<br/>
+                            Duration <?=number_format($bp->info->getDuration(),6)?> seconds (<?=round($bp->info->durationPercent())?>%)<br/>
+                            <?=$bp->info->file?> @line: <?=$bp->info->fileLine?><br/>
                         </div>
 
             </div>
 
-            <div class="text" style="left:<?=$bp->timePercent()?>%;">
+            <div class="text" style="left:<?=$bp->info->timePercent()?>%;">
                 <div class="left-or-right">
                     <?=$bp->label?>
                 </div>
