@@ -1,10 +1,11 @@
 <?php
 //we need it
-require_once __DIR__."/stuff/NestorBreakPoint.php";
-require_once __DIR__."/stuff/Nestor____stuff.php";
-require_once __DIR__."/stuff/NestorView.php";
-require_once __DIR__."/stuff/VV_nestor.php";
-require_once __DIR__."/stuff/NestorLabel.php";
+$currrDir=dirname(__FILE__);
+require_once $currrDir."/stuff/NestorBreakPoint.php";
+require_once $currrDir."/stuff/Nestor____stuff.php";
+require_once $currrDir."/stuff/NestorView.php";
+require_once $currrDir."/stuff/VV_nestor.php";
+require_once $currrDir."/stuff/NestorLabel.php";
 
 /**
  * Utility class to inspect code. A kind of xdebug for your custom usage.

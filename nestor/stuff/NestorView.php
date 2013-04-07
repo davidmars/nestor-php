@@ -65,7 +65,7 @@ class NestorView
      */
     private static function getRealPath($path)
     {
-        $scriptPath = __DIR__ . "/../" . $path . ".php";
+        $scriptPath = dirname(__FILE__). "/../" . $path . ".php";
         if (file_exists($scriptPath)) {
             return $scriptPath;
         }

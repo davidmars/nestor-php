@@ -104,4 +104,12 @@ abstract class Nestor____stuff {
             return "left";
         }
     }
+
+    public static function currentUrl(){
+        $p = 'http';
+        if (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on") {$p .= "s";}
+        $p .= "://";
+        return $p.$_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"];
+    }
+
 }

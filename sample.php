@@ -27,14 +27,14 @@ Nestor::log("Blue","The log result will be blue","#0000ff");
 
 //Groups
 Nestor::log("Mick Jagger","lead and backing vocals","#800","The rolling Stones");
-Nestor::log("Keith Richards","Elelectric, acoustic, slide and bass guitars, keyboards, backing and lead vocals","#800","The rolling Stones");
+Nestor::log("Keith Richards","Elelectric, acoustic, slide and bass guitars, keyboards, backing and lead vocals","group","The rolling Stones");
 Nestor::log("Lou Reed","Vocals, guitar","#080","The Velvet Underground");
-Nestor::log("Charlie Watts","drums, percussion","#800","The rolling Stones");
-Nestor::log("John Cale","Multiple instruments, vocals","#080","The Velvet Underground");
-Nestor::log("Sterling Morrison","Guitar","#080","The Velvet Underground");
-Nestor::log("Maureen Tucker","Percussion","#080","The Velvet Underground");
-Nestor::log("Doug Yule","Vocals, guitar","#080","The Velvet Underground");
-Nestor::log("Ronnie Wood"," electric, acoustic, lap steel, pedal steel, slide and bass guitars, saxophone, drums, backing vocals","#800","The rolling Stones");
+Nestor::log("Charlie Watts","drums, percussion","group","The rolling Stones");
+Nestor::log("John Cale","Multiple instruments, vocals","group","The Velvet Underground");
+Nestor::log("Sterling Morrison","Guitar","group","The Velvet Underground");
+Nestor::log("Maureen Tucker","Percussion","group","The Velvet Underground");
+Nestor::log("Doug Yule","Vocals, guitar","group","The Velvet Underground");
+Nestor::log("Ronnie Wood"," electric, acoustic, lap steel, pedal steel, slide and bass guitars, saxophone, drums, backing vocals","group","The rolling Stones");
 
 //highlight important stuff
 $myImportantLog=Nestor::log("I'm an important step in the program !","I have a dotted line","#b90");
@@ -54,10 +54,17 @@ $myLoopLog->stop(); //end timer
  * @param int $population
  */
 function countPeople($place,$population){
-    $log=Nestor::log("Hello $place","They are ".number_format($population)." in $place","#095","Count of peoples");
+    $myClass=new Continent();
+    $myClass->name=$place;
+    $myClass->population=$population;
+    $log=Nestor::log("Hello $place",$myClass,"#095","Count of peoples");
     for($i=0;$i<$population/1000;$i++){}
     $log->stop();
     $log->isMainStep=true;
+}
+class Continent{
+    public $name;
+    public $population;
 }
 
 //concurrent programs
