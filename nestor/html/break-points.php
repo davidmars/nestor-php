@@ -39,7 +39,7 @@ $vv = $_vars;
                 </div>
 
                 <div class="text-content"
-                     style="right:<?=-$bp->info->timePercent()+(10*($bp->info->timePercent()/100))?>%;"
+                     style="right:<?=-$bp->info->timePercent()+(15*($bp->info->timePercent()/100))?>%;"
                     >
                     <h4 style="color:<?=$bp->color?>;">
                     <?=$bp->group?> <b><?=$bp->label?></b>
