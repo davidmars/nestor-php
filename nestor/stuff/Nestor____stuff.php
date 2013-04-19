@@ -78,18 +78,19 @@ abstract class Nestor____stuff {
      * This header is sent by the Nestor extension https://chrome.google.com/webstore/detail/nestor-the-inspector/mojocpapgcgodcknmicecdoofceldcab
      */
     public static function isActive(){
+        //return false;
         //return true;
-        if(self::$_isActive===null){
-            self::$_isActive=isset($_SERVER['HTTP_X_NESTOR_IS_INSPECTING']);
+        if(self::$isActive===null){
+            self::$isActive=isset($_SERVER['HTTP_X_NESTOR_IS_INSPECTING']);
         }
-        return self::$_isActive;
+        return self::$isActive;
 
     }
 
     /**
      * @var null|bool cache variable for the isActive function.
      */
-    private static $_isActive=null;
+    public static $isActive=null;
 
 
     /**

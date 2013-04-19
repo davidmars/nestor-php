@@ -4,7 +4,7 @@ $currrDir=dirname(__FILE__);
 require_once $currrDir."/stuff/NestorBreakPoint.php";
 require_once $currrDir."/stuff/Nestor____stuff.php";
 require_once $currrDir."/stuff/NestorView.php";
-require_once $currrDir."/stuff/VV_nestor.php";
+require_once $currrDir . "/stuff/VV_nestor.php";
 require_once $currrDir."/stuff/NestorLabel.php";
 
 /**
@@ -22,6 +22,7 @@ class Nestor
      *
      */
     public static function start($logsStorage,$httpLogsStorage=""){
+        Nestor____stuff::$isActive=isset($_SERVER['HTTP_X_NESTOR_IS_INSPECTING']);
         Nestor____stuff::$logsStorage=$logsStorage;
         Nestor____stuff::$httpLogsStorage=$httpLogsStorage;
         Nestor____stuff::$logFile=time()."-".uniqid().".html";
@@ -33,7 +34,7 @@ class Nestor
      * @return bool True if Nestor is inspecting (if the pluggin is activated...you get it?)
      */
     public static function isInspecting(){
-        return Nestor____stuff::isActive();
+        return Nestor____stuff::$isActive;
     }
 
 
@@ -48,7 +49,7 @@ class Nestor
      * @return null|String If nestor is active, will return the public url (http://something/etc...) result.
      */
     public static function end(){
-        if(Nestor____stuff::isActive()){
+        if(Nestor____stuff::$isActive){
             self::cleanDirectory();
             Nestor____stuff::$endTime=microtime(true);
             $json=array();
@@ -56,7 +57,6 @@ class Nestor
 
             //just record a little file with duration
             file_put_contents(Nestor____stuff::$logsStorage."/".Nestor____stuff::$logFile."-info.json",json_encode($json));
-            //header("x-nestor-time : ".Nestor____stuff::getTotalTime());
             $nestorContent=Nestor____stuff::getFinalOutput();
             file_put_contents(Nestor____stuff::$logsStorage."/".Nestor____stuff::$logFile,$nestorContent);
             return Nestor____stuff::getPublicUrl();
@@ -68,6 +68,7 @@ class Nestor
      * prevent the hard drive to explode
      */
     private static function cleanDirectory(){
+        if(rand(0,100)==1){//not always
         $files=scandir(Nestor____stuff::$logsStorage);
         while(count($files)>self::$configMaximumFiles){
             $f=Nestor____stuff::$logsStorage."/".array_shift($files);
@@ -75,6 +76,7 @@ class Nestor
                 unlink($f);
             }
 
+        }
         }
     }
 
@@ -92,16 +94,19 @@ class Nestor
      * @return NestorBreakPoint
      */
     public static function log($title,$details="",$color=null,$group=null){
-        $bp=new NestorBreakPoint();
-        if(!Nestor____stuff::isActive()){
-            return $bp;
+
+        if(!Nestor____stuff::$isActive){
+            return new NestorBreakPointDisabled();
         }
+        $bp=new NestorBreakPoint();
         $bp->label=$title;
         $bp->details=$details;
         $bp->group=$group;
         $bp->color=$color;
 
         //backtrace
+        //$bp->info->file="???";
+        //$bp->info->fileLine="???";
         $bt=debug_backtrace();
         $bp->info->file=$bt[0]["file"];
         $bp->info->fileLine=$bt[0]["line"];
@@ -109,6 +114,37 @@ class Nestor
         return $bp;
     }
 
+}
+class NestorBreakPointDisabled{
+    public function stop(){}
+}
+/**
+ * Class NestorGroup Define a group of break points. The goal here is just to display name, number of logs and total time of this logs.
+ */
+class NestorGroup{
+    /**
+     * @var int Total getDuration of this breakpoint groups
+     */
+    public $duration=0;
+    /**
+     * @var int Number of breakpoints of this group
+     */
+    public $count=0;
+    /**
+     * @var string
+     */
+    public $name="";
+    /**
+     * @var string The default color for a group
+     */
+    public $color="";
+
+    public function __construct($name,$color=null){
+        $this->name=$name;
+        $this->color=$color;
+        self::$all[$this->name]=$this;
+    }
+    public static $all=array();
 }
 
 

@@ -36,20 +36,17 @@ class VV_nestor
     {
         foreach (Nestor____stuff::$breakPoints as $bp) {
             if($bp->group){
-                if(!isset($this->groups[$bp->group])){
-                    $gr=new VV_nestor_group();
-
-                    $gr->name=$bp->group;
-                    $this->groups[$bp->group]=$gr;
+                if(!isset(NestorGroup::$all[$bp->group])){
+                    $gr=new NestorGroup($bp->group);
                 }
-                $gr=$this->groups[$bp->group];
+                $gr=NestorGroup::$all[$bp->group];
                 $gr->count++;
                 $gr->duration+=$bp->info->getDuration();
 
                 if(!$gr->color && ($bp->color && $bp->color != "group")){
                     $gr->color=$bp->color;
                 }
-                if($bp->color=="group"){
+                if($bp->color=="group" || !$bp->color){
                     $bp->color=$gr->color;
                 }
             }
@@ -59,10 +56,11 @@ class VV_nestor
                 $this->mainSteps[]=$bp;
             }
         }
+        $this->groups=NestorGroup::$all;
     }
 
     /**
-     * @var VV_nestor_group[]
+     * @var NestorGroup[]
      */
     public $groups=array();
 
@@ -86,14 +84,16 @@ class VV_nestor
         return "danger";
     }
     public static function code($code){
+        if(gettype($code)=="string"){
+            return $code;
+        }
+
         $code=json_encode($code);
+        $code=str_replace("\n"," ",$code);
+        $code=str_replace("\t"," ",$code);
+        $code=stripslashes($code);
         return self::indent($code);
 
-
-        $code=str_replace("{","\n{\n",$code);
-        $code=str_replace("}","\n}\n",$code);
-        $code=str_replace("\",","\",\n",$code);
-        return $code;
 
     }
 
@@ -160,24 +160,3 @@ class VV_nestor
 
 }
 
-/**
- * Class VV_nestor_group Define a group of break points. The goal here is just to display name, number of logs and total time of this logs.
- */
-class VV_nestor_group{
-    /**
-     * @var int Total getDuration of this breakpoint groups
-     */
-    public $duration=0;
-    /**
-     * @var int Number of breakpoints of this group
-     */
-    public $count=0;
-    /**
-     * @var string
-     */
-    public $name="";
-    /**
-     * @var string The default color for a group
-     */
-    public $color="";
-}
