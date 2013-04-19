@@ -147,6 +147,35 @@ class NestorGroup{
     public static $all=array();
 }
 
+/**
+ * Class NestorGroup Define a group of break points. The goal here is just to display name, number of logs and total time of this logs.
+ */
+class NestorGroup{
+    /**
+     * @var int Total getDuration of this breakpoint groups
+     */
+    public $duration=0;
+    /**
+     * @var int Number of breakpoints of this group
+     */
+    public $count=0;
+    /**
+     * @var string
+     */
+    public $name="";
+    /**
+     * @var string The default color for a group
+     */
+    public $color="";
+
+    public function __construct($name,$color=null){
+        $this->name=$name;
+        $this->color=$color;
+        self::$all[$this->name]=$this;
+    }
+    public static $all=array();
+}
+
 
 
 
